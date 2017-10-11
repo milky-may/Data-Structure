@@ -18,21 +18,23 @@ typedef struct{
 Status InitList(SqList &L)		//初始化顺序表
 {
 	L.elem=(ElemType *)malloc(MAXSIZE*sizeof(ElemType));
-	if(______1_______)   //1
-	
+	//if(______1_______)   //1
+	if(L.elem==NULL)
 		exit(OVERFLOW);
 		L.length=0;
-		______2_______;//2
-	
+	//	______2_______;//2
+	    L.listsize=MAXSIZE;
 	return OK;
 }
 
 Status InsertList(SqList &L,int i,ElemType e){
 	//将新元素e插入到顺序表L的第i个位置上
-	if(______3_______)  return ERROR;//3
+	//if(______3_______)  return ERROR;//3
+    if(i<1 || i>L.length+1) return ERROR;
 	ElemType *p;
 	int j;
-	if(______4_______){		//若顺序表已满，则需扩充空间
+	//if(______4_______){		//若顺序表已满，则需扩充空间
+	if(L.length>=L.listsize){
 		p=(ElemType *)realloc(L.elem,(L.listsize+INCREMENT)*sizeof(ElemType));
 		if(!p)exit(OVERFLOW);
 		L.elem=p;
@@ -40,7 +42,8 @@ Status InsertList(SqList &L,int i,ElemType e){
 	}
 	for(j=L.length-1;j>=i-1;--j) 
 	L.elem[j+1]=L.elem[j];
-	______5_______;		//插入新元素
+	//______5_______;		//插入新元素
+	L.elem[j+1]=e;
 	L.length++;
 	return OK;
 }//InsertList
@@ -48,7 +51,8 @@ Status InsertList(SqList &L,int i,ElemType e){
 void PrintList(SqList L)		//输出顺序表元素
 {
 	int i;
-	for(i=0;______6_______;i++)//6
+	//for(i=0;______6_______;i++)//6
+	for(i=0;i<L.length;i++)
 		printf("%d ",L.elem[i]);
 	printf("\n");
 }
@@ -58,7 +62,8 @@ int SearchList(SqList L,ElemType e)
 {
 	int i;
 	for(i=0;i<L.length;i++)
-		if(______7______)		//找到相同的元素，返回位置  7
+		//if(______7______)		//找到相同的元素，返回位置  7
+		if(L.elem[i]==e)
 			return i;
 		return -1;
 }
@@ -72,7 +77,8 @@ int Del_List1(SqList &L,ElemType e)
 			break;
 		if(i<L.length){
 			for(j=i;j<L.length;j++)			//删除
-				______8_______;//8
+				//______8_______;//8
+				L.elem[j]=L.elem[j+1];
 			L.length--;
 			return i;
 		}
@@ -82,35 +88,40 @@ int Del_List1(SqList &L,ElemType e)
 Status Del_List2(SqList &L,int i,ElemType &e)
 //在顺序表L中删除第i个元素，被删元素用参数e带回
 {
-	if(______9_______) return ERROR;//9
+	//if(______9_______) return ERROR;//9
+	if(i<1 || i>L.length+1) return ERROR;
 	int j;
 	e=L.elem[i-1];
 	for(j=i;j<=L.length;j++)
-		______10_______;//10
+		//______10_______;//10
+		L.elem[j-1]=L.elem[j];
 	--L.length;
 	return OK;
 }
 
-void main()
+int main()
 {
 	SqList LL;
 	ElemType x;
 	int r,i;
 	printf("(1)初始化顺序表......\n");
-	if(!InitList(LL)) return;
+	if(!InitList(LL)) return 0;
 	printf("初始化成功!\n");
 	printf("(2)顺序表的插入操作......\n");
 	while(1)
 	{
 		printf("  输入插入元素值(0:结束)=>");
 		scanf("%d",&x);
-		if(______11_______)    //11
+		//if(______11_______)    //11
+		if(x==0)
 			break;
 		printf("   输入插入位置:");
 		scanf("%d",&r);
-		______12_______;//12
+		//______12_______;//12
+		InsertList(LL,r,x);
 		printf("  线性表输出:");
-		______13_______;//13
+		//______13_______;//13
+		PrintList(LL);
 	}
 	printf("(3)顺序表上的查找工作......\n");
 	while(1)		//在顺序表中查找指定值的元素，输出该元素所在位置
@@ -119,7 +130,8 @@ void main()
 		scanf("%d",&x);
 		if(x==0)
 			break;
-		r=______14_______;//14
+		//r=______14_______;//14
+		r=SearchList(LL,x);
 		if(r<0)
 			printf("	没找到!\n");
 		else
@@ -132,7 +144,8 @@ void main()
 		scanf("%d",&x);
 		if(x==0)
 			break;
-		r=______15_______;//15
+		//r=______15_______;//15
+		r=Del_List1(LL,x);
 		if(r<0)
 			printf("	没找到\n");
 		else{
@@ -147,10 +160,12 @@ void main()
 		scanf("%d",&r);
 		if(r==0)
 			break;
-		if(______16_______)
+		//if(______16_______)
+		if(r<0 || r>LL.length)
 			printf("  位置越界!\n");
 		else{
-			______17_______;
+			//______17_______;
+			Del_List2(LL,r,x);
 			printf("  线性表输出: ");
 			PrintList(LL);
 		}
