@@ -1,4 +1,4 @@
-﻿#define OVERFLOW -1
+#define OVERFLOW -1
 #define OK 1
 #define ERROR 0
 #define MAXSIZE 6           //空间初始分配量，为了检验空间扩展，初值取小一点
