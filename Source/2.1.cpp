@@ -25,8 +25,10 @@ Status CreatLinkL1(LinkList &L,int n,ElemType *E){
 		if(!(p=(LinkList)malloc(sizeof(LNode))))
 			return ERROR;
 		p->data=E[i];
-		______1______;
-		______2______;
+		// ______1______;
+		// ______2______;
+		p->next=L->next;
+		L->next=p;
 	}
 	return OK;
 }
@@ -42,8 +44,10 @@ Status  CreatLinkL2(LinkList  &L,int n,ElemType *E){
 		if(!(p=(LinkList)malloc(sizeof(LNode))))	//生成新结点
 			return ERROR;
 		p->data=E[i];
-		________3___________;						//新结点插入到表尾
-		_________4__________;
+		// ________3___________;						//新结点插入到表尾
+		// _________4__________;
+		r->next=p;
+		r=r->next;
 	}
 	r->next=NULL;
 	return OK;
@@ -60,8 +64,10 @@ Status InsertLinkL(LinkList &L, int i, ElemType e){
 	if(!(s=(LinkList)malloc(sizeof(LNode))))  //申请元素e的结点空间
 		return OVERFLOW;           //内存无空闲单元，无法申请到空间
 	s->data=e;
-	____5____;          //将新结点s插入到链表中
-	____6____;
+	// ____5____;          //将新结点s插入到链表中
+	// ____6____;
+	s->next=p->next;
+	p->next=s;
 	return OK;
 }
 Status Del_LinkL1(LinkList L,int i,ElemType &e){
@@ -72,7 +78,8 @@ Status Del_LinkL1(LinkList L,int i,ElemType &e){
 	}
 	if(!p->next||k>i-1) return ERROR;
 	q=p->next;
-	_______7________;
+	// _______7________;
+	p->next=q->next;
 	e=q->data; free(q);
 	return OK; 
 }
@@ -81,7 +88,8 @@ Status Del_LinkL2(LinkList &L,ElemType e)
 	LinkList p,q;
 	p=L;
 	q=L->next;
-	while(_______8________;){
+	// while(_______8________;){
+	while(q->data!=e){
 		p=q;
 	    q=q->next;
 	}
@@ -100,7 +108,8 @@ Status Del_LinkL3(LinkList &L,ElemType e)
 	while(q!=NULL){
 		if(q->data==e)
 		{
-			________9_______;;
+			// ________9_______;
+			p->next=q->next;
 			free(q);
 			tag=TRUE;
 		}
@@ -125,13 +134,14 @@ void FreeLinkL(LinkList &L)
 	LinkList p,q;
 	p=L;
 	while(p!=NULL){
-		__________10___________;
+		// __________10___________;
+		q=p;
 		p=p->next;
 		free(q);
 	}
 	L=NULL;
 }
-void main()
+int main()
 {
 	ElemType  E[]={34,12,45,64,28,36,45,56};    //准备线性表
 	int i,n=8;
@@ -140,7 +150,7 @@ void main()
 	printf("(1)表头插入法创建单链表......\n");
 	if(!CreatLinkL1(head,n,E)){
 		printf(" 内存空间不够，创建失败! \n");
-		return;
+		return 0;
 	}
 	else {
 		printf(" 创建完成。链表输出: ");
@@ -150,7 +160,7 @@ void main()
 	FreeLinkL(head);
 	if(!CreatLinkL2(head,n,E)) {
 		printf(" 内存空间不够，创建失败! \n");
-		return;
+		return 0;
 	}
 	else {
 		printf(" 创建完成。链表输出: ");
