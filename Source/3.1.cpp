@@ -19,6 +19,7 @@ typedef struct{              //顺序栈的定义
 status InitStack(SqStack &S){          //构造一个空栈S
 	S.base=(SelemType*)malloc(STACK_INIT_SIZE*sizeof(SelemType));
 	if(!S.base) exit(OVERFLOW);         //存储分配失败
+	//__________1_________
 	S.top=S.base;
     S.stacksize=STACK_INIT_SIZE;
 	return OK;
@@ -31,16 +32,19 @@ status Push(SqStack &S,SelemType e){
 		S.top=S.base+S.stacksize;
 		S.stacksize+=STACKINCREMENT;
 	}
+	//__________2__________
 	*S.top++=e;
 	return OK;
 }
 status Pop(SqStack &S,SelemType &e){
 	  //若栈不空，则删除S的栈顶元素，用e返回其值，并返回OK；否则返回ERROR
 	if(S.top==S.base)     return ERROR;
+	//__________3____________
 	e=*--S.top;
 	return OK;
 }
 status StackEmpty(SqStack S){                        //判断栈S是否为空
+	//if(_________4__________)
     if(S.top==S.base)
         return TRUE;
     else return FALSE;
@@ -59,12 +63,14 @@ void conversion(){                                   //进制转换
         printf("请输入要转换的进制：");
         scanf("%d",&d);                              //2、8或16进制
         while(N){                                    //输出相应的符号
+        	//ys=_________5____________
             ys=N%d;                        //求余
             if(ys<=9)
                 x=ys+'0';
             else
                 x=ys-10+'A';
             Push(S,x);
+            //N=____________6_______________
             N=N/d;                        //求商
         }
         printf("转换所得%d进制数为：",d);

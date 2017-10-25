@@ -6,20 +6,23 @@
 #include "string.h"
 typedef int status;
 typedef char SelemType;
-typedef struct StackNode {//Ë³ĞòÕ»µÄ¶¨Òå
+typedef struct StackNode {//é¡ºåºæ ˆçš„å®šä¹‰
     SelemType data;
     struct StackNode *next;
 }StackNode,*linkstack;
 
-void InitStack(linkstack &S){                       //¹¹ÔìÒ»¸ö¿ÕÕ»S
+void InitStack(linkstack &S){                       //æ„é€ ä¸€ä¸ªç©ºæ ˆS
 	S=NULL;
 }
 
 status Push(linkstack &S, SelemType e){
-	//²åÈëÔªËØeÎªĞÂÊÀ½çµÄÕ»¶¥ÔªËØ
+	//æ’å…¥å…ƒç´ eä¸ºæ–°ä¸–ç•Œçš„æ ˆé¡¶å…ƒç´ 
 	linkstack p;
 	p=(linkstack)malloc(sizeof(StackNode));
-	if(!p) return ERROR;             //´æ´¢·ÖÅäÊ§°Ü
+	if(!p) return ERROR;             //å­˜å‚¨åˆ†é…å¤±è´¥
+    //_____________
+    //_____________
+    //_____________
 	p->next=S;
 	p->data=e;
 	S=p;
@@ -27,36 +30,43 @@ status Push(linkstack &S, SelemType e){
 }
 
 status Pop(linkstack &S, SelemType &e){
-	//ÈôÕ»²»¿Õ£¬ÔòÉ¾³ıSµÄÕ»¶¥ÔªËØ£¬ÓÃe·´»ØÆäÖµ£¬²¢·µ»ØOK£»·ñÔò·µ»ØERROR
+	//è‹¥æ ˆä¸ç©ºï¼Œåˆ™åˆ é™¤Sçš„æ ˆé¡¶å…ƒç´ ï¼Œç”¨eåå›å…¶å€¼ï¼Œå¹¶è¿”å›OKï¼›å¦åˆ™è¿”å›ERROR
 	linkstack p=S;
 	if(!S) return ERROR;
+    //____________
+    //____________
+    //____________
 	e=p->data;
 	S=p->next;
 	free(p);
 	return OK;
 }
 
-int StackEmpty(linkstack S){//ÅĞ¶ÏÕ»SÊÇ·ñÒÑÂú
+int StackEmpty(linkstack S){//åˆ¤æ–­æ ˆSæ˜¯å¦å·²æ»¡
       return S==NULL;
 }
 
-int correct( char *exp, int max )           //Åä¶Ôº¯Êı
-// ´«Èë²ÎÊıÎª±í´ïÊ½ºÍ±í´ïÊ½³¤¶È£¬·µ»Ø1Îª³É¹¦£¬·µ»Ø0Îª´íÎó 
+int correct( char *exp, int max )           //é…å¯¹å‡½æ•°
+// ä¼ å…¥å‚æ•°ä¸ºè¡¨è¾¾å¼å’Œè¡¨è¾¾å¼é•¿åº¦ï¼Œè¿”å›1ä¸ºæˆåŠŸï¼Œè¿”å›0ä¸ºé”™è¯¯ 
 {
-    int i, flag = 1;                       // À¨ºÅÆ¥Åä±êÖ¾£¬1ÎªÆ¥Åä
+    int i, flag = 1;                       // æ‹¬å·åŒ¹é…æ ‡å¿—ï¼Œ1ä¸ºåŒ¹é…
     char e,x;
 	linkstack S;
 	InitStack(S);
-    for( i=0;i<max && flag ==1 ; i++) {    // Ñ­»·Ìõ¼şÎª±í´ïÊ½Î´½áÊøÇÒÀ¨ºÅÆ¥Åä
+    //if(i=0;_________1__________;i++)
+    for( i=0;i<max && flag ==1 ; i++) {    // å¾ªç¯æ¡ä»¶ä¸ºè¡¨è¾¾å¼æœªç»“æŸä¸”æ‹¬å·åŒ¹é…
         x=exp[i];
-		if( exp[i]=='('||exp[i]=='['||exp[i]=='{')   // Óö×óÀ¨ºÅ½øÕ»
+		if( exp[i]=='('||exp[i]=='['||exp[i]=='{')   // é‡å·¦æ‹¬å·è¿›æ ˆ
+            //________2_________
             Push(S,x);
-        if(x==')'||x==']'||x=='}')                             // ÓöÓÒÀ¨ºÅ³öÕ»
-        {  if(!Pop(S,e)) flag=0;   // ³öÕ»£¬Èô³öÕ»³ö´í£¬ÔòÓÒÀ¨ºÅÌ«¶à£¬Ê§Åä!
-           else if((x==')'&&e!='(')||(x==']'&&e!='[')||(x=='}'&&e!='{')) flag = 0;       // À¨ºÅ²»Æ¥Åä 
+        if(x==')'||x==']'||x=='}')                             // é‡å³æ‹¬å·å‡ºæ ˆ
+        {  //if(_____3_____) flag =0;
+            if(!Pop(S,e)) flag=0;   // å‡ºæ ˆï¼Œè‹¥å‡ºæ ˆå‡ºé”™ï¼Œåˆ™å³æ‹¬å·å¤ªå¤šï¼Œå¤±é…!
+           else if((x==')'&&e!='(')||(x==']'&&e!='[')||(x=='}'&&e!='{')) flag = 0;       // æ‹¬å·ä¸åŒ¹é… 
 		}
 	}
-    if(!StackEmpty(S))  // ±í´ïÊ½É¨ÃèÍê±Ï£¬ÈôÕ»·Ç¿ÕÔò×óÀ¨ºÅÌ«¶à£¬Ê§Åä!
+    //if(______4__________)
+    if(!StackEmpty(S))  // è¡¨è¾¾å¼æ‰«æå®Œæ¯•ï¼Œè‹¥æ ˆéç©ºåˆ™å·¦æ‹¬å·å¤ªå¤šï¼Œå¤±é…!
         flag = 0;
     return flag;
 }
@@ -65,13 +75,13 @@ void main()
 {
     char exp[MAXN];
     while( 1 ) {
-        printf("ÇëÊäÈë±í´ïÊ½£¬ÊäÈë0ÍË³ö£º");
-        gets(exp);               /* ´Ó±ê×¼ÊäÈëÖĞ¶ÁÈ¡±í´ïÊ½ */
+        printf("è¯·è¾“å…¥è¡¨è¾¾å¼ï¼Œè¾“å…¥0é€€å‡ºï¼š");
+        gets(exp);               /* ä»æ ‡å‡†è¾“å…¥ä¸­è¯»å–è¡¨è¾¾å¼ */
         if(strcmp(exp,"0")==0)
            break;
         if(correct(exp, strlen(exp))==0)
-           printf("±í´ïÊ½ÄÚÈİÎª£º\n%s\n±í´ïÊ½À¨ºÅ²»Æ¥Åä\n", exp);
+           printf("è¡¨è¾¾å¼å†…å®¹ä¸ºï¼š\n%s\nè¡¨è¾¾å¼æ‹¬å·ä¸åŒ¹é…\n", exp);
         else
-           printf("±í´ïÊ½À¨ºÅÆ¥Åä!\n");
+           printf("è¡¨è¾¾å¼æ‹¬å·åŒ¹é…!\n");
     }
 }
