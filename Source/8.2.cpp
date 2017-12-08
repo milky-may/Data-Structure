@@ -48,7 +48,7 @@ void OutputMG(MGraph mg)
 	for(i=0;i<mg.vexnum;i++)
 	{
 		for(j=0;j<mg.vexnum;j++)
-			if(mg.arc[i][j]==INF)
+			if(mg.arcs[i][j]==INF)
 			printf(" 　∞");
 			else
 				printf("%4d",mg.arcs[i][j]);
@@ -74,7 +74,8 @@ void Prim(MGraph G,int u)
 			if(closedge[j].lowcost!=0&&closedge[j].lowcost<min)
 			{
 				min=closedge[j].lowcost;
-				k=____1____;
+				//k=____1____;
+				k=j;
 			}
 			printf("  %d, (%d, %d): %d\n",k,closedge[k].adjvex,k,min);
 			closedge[k].lowcost=0;
@@ -82,7 +83,8 @@ void Prim(MGraph G,int u)
 				if(G.arcs[k][j]<closedge[j].lowcost)
 				{
 					closedge[j].adjvex=k;
-					closedge[j].lowcost=____2____;
+					//closedge[j].lowcost=____2____;
+					closedge[j].lowcost=G.arcs[k][j];
 				}
 	}
 }
@@ -95,9 +97,12 @@ void SortEdge(MGraph G,Edge E[])
 			{
 				for(k=c-1;k>=0&&E[k].w>G.arcs[i][j];k--)
 					E[k+1]=E[k];
-				E[k+1].u=____3_____;
-				E[k+1].v=____4_____;
-				E[k+1].w=____5_____;
+				// E[k+1].u=____3_____;
+				// E[k+1].v=____4_____;
+				// E[k+1].w=____5_____;
+				E[k+1].u=i;
+				E[k+1].v=j;
+				E[k+1].w=G.arcs[i][j];
 				c++;
 			}
 }
@@ -125,19 +130,19 @@ void Kruskal(Edge E[],int n,int e)
 		j++;
 	}
 }
-void main()
+int main()
 {
 	int u=0;
 	MGraph mg;
 	Edge E[MAXE];
 	printf("(1)构造图的邻接矩阵.....\n");
-	CraeteMG(mg);
+	CreateMG(mg);
 	printf("(2)当前图的邻接矩阵如下：\n");
 	OutputMG(mg);
 	getchar();
 	printf("(3)普里姆（Prim） 算法求解结果如下：\n");
 	Prim(mg,u);
-	getchar;
+	getchar();
 	printf("(4)克鲁斯卡尔（Kruskal） 算法求解结果如下：\n");
 	SortEdge(mg,E);
 	Kruskal(E,mg.vexnum,mg.arcnum);
